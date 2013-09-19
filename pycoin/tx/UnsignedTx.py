@@ -51,7 +51,7 @@ class UnsignedTx(object):
         self.lock_time = lock_time
 
     @classmethod
-    def standard_tx(class_, previous_hash_index_txout_tuple_list, coin_value__bitcoin_address__tuple_list, version=1, lock_time=0):
+    def standard_tx(class_, previous_hash_index_txout_tuple_list, coin_value__bitcoin_address__tuple_list, version=1, lock_time=0, addr_to_sec=None):
         """Create a standard transaction.
         previous_hash_index_txout_tuple_list: a list of tuples of the form
             (previous hash, previous index, tx_out) corresponding to the
@@ -62,13 +62,15 @@ class UnsignedTx(object):
             The satoshi_count is an integer indicating number of Satoshis (there
             are 1e8 Satoshis in a Bitcoin) and bitcoin_address is a standard
             Bitcoin address like 1FKYxGDywd7giFbnmKdvYmVgBHB9B2HXMw.
+        addr_to_sec: a function to convert string (typically base58) to hash160 of the pubkey used. Defaults to bitcoin_address_to_hash160_sec() from pycoin.encoding. Must return 20 bytes.
         Returns an UnsignedTx object. You must call "sign" before you drop it
         on the network."""
 
         new_txs_out = []
+        addr_to_sec = addr_to_sec or bitcoin_address_to_hash160_sec
         STANDARD_SCRIPT_OUT = "OP_DUP OP_HASH160 %s OP_EQUALVERIFY OP_CHECKSIG"
         for coin_value, bitcoin_address in coin_value__bitcoin_address__tuple_list:
-            hash160 = bitcoin_address_to_hash160_sec(bitcoin_address)
+            hash160 = addr_to_sec(bitcoin_address)
             script_text = STANDARD_SCRIPT_OUT % b2h(hash160)
             script_bin = tools.compile(script_text)
             new_txs_out.append(TxOut(coin_value, script_bin))
