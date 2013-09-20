@@ -5,7 +5,7 @@ Extension to support Litecoin
 
 The MIT License (MIT)
 
-Copyright (c) 2013 by Richard Kiss
+Copyright (c) 2013 by Peter D. Gray
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -29,9 +29,6 @@ THE SOFTWARE.
 import binascii
 import hashlib
 from .encoding import a2b_hashed_base58, EncodingError
-
-def ltc_public_byte_prefix(is_test):
-    pass
 
 def ltc_public_byte_prefix(is_test):
     """LITECOIN Address prefix. Returns b'\30' for main network and b'\x6f' for testnet"""
