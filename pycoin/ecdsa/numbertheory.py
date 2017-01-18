@@ -1,3 +1,7 @@
+try:
+    from .native.library import NATIVE_LIBRARY
+except ImportError:
+    NATIVE_LIBRARY = None
 
 def inverse_mod( a, m ):
   """Inverse of a mod m."""
@@ -19,17 +23,24 @@ def inverse_mod( a, m ):
   if ud > 0: return ud
   else: return ud + m
 
+
+if NATIVE_LIBRARY:
+    inverse_mod = NATIVE_LIBRARY.inverse_mod
+
+
 # from http://eli.thegreenplace.net/2009/03/07/computing-modular-square-roots-in-python/
+# with few fixes and suggestions from
+# http://codereview.stackexchange.com/questions/43210/tonelli-shanks-algorithm-implementation-of-prime-modular-square-root
 
 def modular_sqrt(a, p):
     """ Find a quadratic residue (mod p) of 'a'. p
-    must be an odd prime.
+    must be a prime.
 
     Solve the congruence of the form:
     x^2 = a (mod p)
     And returns x. Note that p - x is also a root.
 
-    0 is returned is no square root exists for
+    0 is returned if no square root exists for
     these a and p.
 
     The Tonelli-Shanks algorithm is used (except
@@ -45,7 +56,7 @@ def modular_sqrt(a, p):
     elif a == 0:
         return 0
     elif p == 2:
-        return p
+        return a
     elif p % 4 == 3:
         return pow(a, (p + 1) // 4, p)
 
@@ -96,7 +107,7 @@ def modular_sqrt(a, p):
         if m == 0:
             return x
 
-        gs = pow(g, 2 ** (r - m - 1), p)
+        gs = pow(g, 1 << (r - m - 1), p)
         g = (gs * gs) % p
         x = (x * gs) % p
         b = (b * g) % p

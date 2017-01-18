@@ -1,5 +1,6 @@
 
-import struct
+import io
+
 
 class Streamer(object):
     def __init__(self):
@@ -29,9 +30,9 @@ class Streamer(object):
                 array = []
                 for j in range(count):
                     if len(subfmt) == 1:
-                        array.append(parse_struct(subfmt, f)[0])
+                        array.append(self.parse_struct(subfmt, f)[0])
                     else:
-                        array.append(parse_struct(subfmt, f))
+                        array.append(self.parse_struct(subfmt, f))
                 l.append(tuple(array))
                 i = end
             else:
@@ -52,4 +53,4 @@ class Streamer(object):
     def pack_struct(self, fmt, *args):
         b = io.BytesIO()
         self.stream_struct(fmt, b, *args)
-        return b.get_value()
+        return b.getvalue()

@@ -28,22 +28,6 @@ THE SOFTWARE.
 
 OPCODE_LIST = [
   ("OP_0", 0),
-  ("OP_1", 1),
-  ("OP_2", 2),
-  ("OP_3", 3),
-  ("OP_4", 4),
-  ("OP_5", 5),
-  ("OP_6", 6),
-  ("OP_7", 7),
-  ("OP_8", 8),
-  ("OP_9", 9),
-  ("OP_10", 10),
-  ("OP_11", 11),
-  ("OP_12", 12),
-  ("OP_13", 13),
-  ("OP_14", 14),
-  ("OP_15", 15),
-  ("OP_16", 16),
   ("OP_PUSHDATA1", 76),
   ("OP_PUSHDATA2", 77),
   ("OP_PUSHDATA4", 78),
@@ -146,7 +130,9 @@ OPCODE_LIST = [
   ("OP_CHECKMULTISIGVERIFY", 175),
   ("OP_NOP1", 176),
   ("OP_NOP2", 177),
+  ("OP_CHECKLOCKTIMEVERIFY", 177),
   ("OP_NOP3", 178),
+  ("OP_CHECKSEQUENCEVERIFY", 178),
   ("OP_NOP4", 179),
   ("OP_NOP5", 180),
   ("OP_NOP6", 181),
@@ -154,6 +140,7 @@ OPCODE_LIST = [
   ("OP_NOP8", 183),
   ("OP_NOP9", 184),
   ("OP_NOP10", 185),
+  ("OP_NULLDATA", 252),
   ("OP_PUBKEYHASH", 253),
   ("OP_PUBKEY", 254),
   ("OP_INVALIDOPCODE", 255),
@@ -162,6 +149,7 @@ OPCODE_LIST = [
 OPCODE_TO_INT = dict(o for o in OPCODE_LIST)
 
 INT_TO_OPCODE = dict(reversed(i) for i in OPCODE_LIST)
+
 
 def populate_module():
     """Make all the opcodes globals in this module to make it possible to
